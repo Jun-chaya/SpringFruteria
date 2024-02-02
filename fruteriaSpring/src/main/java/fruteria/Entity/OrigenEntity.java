@@ -7,7 +7,6 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Data
@@ -19,11 +18,9 @@ public class OrigenEntity {
 	@Column(name = "id")
 	private Integer id;
 	
-	@NonNull
 	@Column(name = "ciudad")
 	private String ciudad;
 	
-	@NonNull
 	@Column(name = "pais")
 	private String pais;
 	

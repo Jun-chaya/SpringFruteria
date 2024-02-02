@@ -27,7 +27,7 @@ public class AlbaranEntity {
 	@NonNull
 	@OneToOne
 	@Column(name = "proveedorId")
-	private Integer nombre;
+	private ProveedorEntity proveedorId;
 	
 	@Column(name="fecha")
 	private LocalDate fecha;

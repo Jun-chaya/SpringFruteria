@@ -7,13 +7,12 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Proveedor")
-public class ProveedorEntity {
+@Table(name = "Categoria")
+public class CategoriaEntity {
 	
 	@Id
 	@Column(name = "id")
@@ -21,10 +20,4 @@ public class ProveedorEntity {
 	
 	@Column(name = "nombre")
 	private String nombre;
-	
-	@Column(name = "precio")
-	private Double precio;
-	
-	@Column(name = "direccion")
-	private String direccion;
 }

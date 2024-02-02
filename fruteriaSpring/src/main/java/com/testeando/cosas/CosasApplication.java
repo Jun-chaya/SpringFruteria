@@ -14,9 +14,6 @@ public class CosasApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CosasApplication.class, args);
-		ClienteProvider clienteProvider = new ClienteProviderImp();
-		
-		List<ClienteDTO> resultado = clienteProvider.getClientesList();
 	}
 
 }

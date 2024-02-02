@@ -19,7 +19,7 @@ public class MarcaEntity {
 	@Column(name = "id")
 	private Integer id;
 	
-	@NonNull
+	
 	@Column(name = "nombre")
 	private String nombre;
 }

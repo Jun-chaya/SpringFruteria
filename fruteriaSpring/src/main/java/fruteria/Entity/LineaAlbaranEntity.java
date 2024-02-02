@@ -18,15 +18,14 @@ import lombok.NonNull;
 @Table(name = "LineaAlbaran")
 public class LineaAlbaranEntity {
 	
-	@Id
 	@ManyToOne
 	@JoinColumn(name = "albaranId")
 	private AlbaranEntity albaranId;
 	
 	@NonNull
 	@OneToOne
-	@Column(name = "itemId")
-	private String itemId;
+	@JoinColumn(name = "itemId")
+	private ItemEntity itemId;
 	
 	@Column(name = "cantidad")
 	private Integer cantidad;

@@ -6,3 +6,5 @@ spring:
     database-platform: org.sqlite.hibernate.dialect.SQLiteDialect
     hibernate:
       ddl-auto: update
+    show-sql: true
+    

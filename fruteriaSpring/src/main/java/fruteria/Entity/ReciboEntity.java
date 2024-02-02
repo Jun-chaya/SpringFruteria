@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -26,12 +27,12 @@ public class ReciboEntity {
 
 	@NonNull
 	@OneToOne
-	@Column(name = "clienteId")
-	private Integer nombre;
+	@JoinColumn(name = "clienteId")
+	private ClienteEntity clienteId;
 
 	@Column(name = "fecha")
 	private LocalDate fecha;
 
 	@OneToMany(mappedBy = "reciboId")
-	private List<LineaAlbaranEntity> lineasRecibo;
+	private List<LineaReciboEntity> lineasRecibo;
 }
