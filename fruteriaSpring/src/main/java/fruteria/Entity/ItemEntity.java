@@ -1,14 +1,11 @@
 package fruteria.Entity;
 
-import java.time.LocalDate;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -21,32 +18,24 @@ import lombok.NoArgsConstructor;
 public class ItemEntity {
 
 	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "marcaId")
-	private MarcaEntity marcaId;
+	private MarcaEntity marca;
 
-	@Column(name = "nombre")
 	private String nombre;
-
-	@Column(name = "fechaProduccion")
-	private LocalDate fechaProduccion;
-
-	@Column(name = "fechaCaducidad")
-	private LocalDate fechaCaducidad;
-
-	@Column(name = "precio")
+	private String fechaProduccion;
+	private String fechaCaducidad;
 	private Double precio;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "origenId")
-	private OrigenEntity origenId;
+	private OrigenEntity origen;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "categoriaId")
-	private CategoriaEntity categoriaId;
+	private CategoriaEntity categoria;
 
 }

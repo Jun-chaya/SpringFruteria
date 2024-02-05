@@ -3,8 +3,8 @@ package fruteria.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import fruteria.Entity.ClienteEntity;
+import fruteria.Entity.ReciboEntity;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<ClienteEntity, Long>{
+public interface ReciboRepository extends JpaRepository<ReciboEntity, Long> {
 }

@@ -1,19 +1,15 @@
 package fruteria.Entity;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Data
@@ -22,17 +18,12 @@ import lombok.NonNull;
 public class ReciboEntity {
 
 	@Id
-	@Column(name = "id")
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@NonNull
-	@OneToOne
-	@JoinColumn(name = "clienteId")
-	private ClienteEntity clienteId;
+	@ManyToOne
+	@JoinColumn(name = "clienteId", nullable = false)
+	private ClienteEntity cliente;
 
-	@Column(name = "fecha")
-	private LocalDate fecha;
-
-	@OneToMany(mappedBy = "reciboId")
-	private List<LineaReciboEntity> lineasRecibo;
+	private String fecha;
 }

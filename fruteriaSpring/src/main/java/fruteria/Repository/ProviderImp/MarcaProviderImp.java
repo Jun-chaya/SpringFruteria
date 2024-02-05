@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import fruteria.DTO.MarcaDTO;
 import fruteria.Entity.MarcaEntity;
 import fruteria.Repository.MarcaRepository;
 
+@Service
 public class MarcaProviderImp {
 
 	private MarcaRepository marcaRepository;

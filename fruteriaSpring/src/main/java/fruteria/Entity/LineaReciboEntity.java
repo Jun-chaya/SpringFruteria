@@ -1,32 +1,35 @@
 package fruteria.Entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Data
 @NoArgsConstructor
 @Table(name = "LineaRecibo")
 public class LineaReciboEntity {
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
 	@ManyToOne
-	@JoinColumn(name = "reciboId")
-	private ReciboEntity reciboId;
-	
-	@NonNull
-	@OneToOne
-	@JoinColumn(name = "itemId")
-	private ItemEntity itemId;
-	
-	@Column(name = "cantidad")
+	@JoinColumn(name = "reciboId", nullable = false)
+	private ReciboEntity recibo;
+
+	@ManyToOne
+	@JoinColumn(name = "itemId", nullable = false)
+	private ItemEntity item;
+
 	private Integer cantidad;
 }

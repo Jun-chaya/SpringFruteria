@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import fruteria.Entity.MarcaEntity;
 
-public interface MarcaRepository  extends JpaRepository<MarcaEntity, Integer>{
+public interface MarcaRepository  extends JpaRepository<MarcaEntity, Long>{
 
 }

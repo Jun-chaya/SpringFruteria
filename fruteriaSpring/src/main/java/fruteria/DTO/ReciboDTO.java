@@ -1,5 +1,8 @@
 package fruteria.DTO;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClienteDTO {
+public class ReciboDTO {
 
 	private Long id;
-	private String nombre;
+	private Long idCliente;
+	private LocalDate fecha;
+
 }
