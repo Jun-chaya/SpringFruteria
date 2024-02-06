@@ -3,16 +3,18 @@ package fruteria.Provider;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import fruteria.DTO.ReciboDTO;
 
 public interface ReciboProvider {
-	List<ReciboDTO> getRecibosList();
+	ResponseEntity<List<ReciboDTO>> getRecibosList();
 
-	ReciboDTO getReciboById(Long id);
+	ResponseEntity<ReciboDTO> getReciboById(Long id);
 
-	ReciboDTO createRecibo(Long idCliente, LocalDate fecha);
+	String createRecibo(Long idCliente);
 
-	ReciboDTO updateRecibo(Long id, Long idCliente, LocalDate fecha);
+	String updateRecibo(Long id, Long idCliente);
 
 	boolean deleteRecibo(Long id);
 }

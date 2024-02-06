@@ -11,12 +11,12 @@ import fruteria.DTO.ClienteDTO;
 public interface ClienteProvider {
 
 	List<ClienteDTO> getClientesList();
-	
+
 	ClienteDTO getClienteById(Long id);
-	
+
 	boolean saveCliente(String nombre);
-	
+
 	String deleteCliente(Long id);
-	
+
 	String updateCliente(Long id, String nombre);
 }

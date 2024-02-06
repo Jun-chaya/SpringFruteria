@@ -1,12 +1,14 @@
 package fruteria.Repository.ProviderImp;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import fruteria.DTO.ReciboDTO;
@@ -26,41 +28,61 @@ public class ReciboProviderImp implements ReciboProvider {
 	private ClienteRepository clienteProvider;
 
 	@Override
-	public List<ReciboDTO> getRecibosList() {
-		return repository.findAll().stream().map(this::reciboEntityToDTO).collect(Collectors.toList());
-	}
-
-	@Override
-	public ReciboDTO getReciboById(Long id) {
-		Optional<ReciboEntity> reciboOpt = repository.findById(id);
-		if (reciboOpt.isPresent()) {
-			return reciboOpt.map(this::reciboEntityToDTO).get();
-		} else {
-			return null;
+	public ResponseEntity<List<ReciboDTO>> getRecibosList() {
+		if (repository.findAll().isEmpty()) {
+			return ResponseEntity.notFound().build();
 		}
+		
+		return ResponseEntity
+				.ok(repository.findAll().stream().map(this::reciboEntityToDTO).collect(Collectors.toList()));
 	}
 
 	@Override
-	public ReciboDTO createRecibo(Long idCliente, LocalDate	fecha) {
-		ReciboEntity reciboEntity = new ReciboEntity();
+	public ResponseEntity<ReciboDTO> getReciboById(Long id) {
+
+		Optional<ReciboEntity> reciboOpt = repository.findById(id);
+		if (!reciboOpt.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(reciboEntityToDTO(reciboOpt.get()));
+
+	}
+
+	@Override
+	public String createRecibo(Long idCliente) {
 		Optional<ClienteEntity> cliente = clienteProvider.findById(idCliente);
+		if (!cliente.isPresent()) {
+			return "Cliente para el recibo no encontrado";
+		}
+
+		ReciboEntity reciboEntity = new ReciboEntity();
+
 		reciboEntity.setCliente(cliente.get());
-		reciboEntity.setFecha(fecha.toString());
+		reciboEntity.setFecha(LocalDate.now().toString());
+
 		reciboEntity = repository.save(reciboEntity);
-		return reciboEntityToDTO(reciboEntity);
+		return String.format("Recibo creado con id %d para el cliente %s el dia %s ", reciboEntity.getId(),
+				reciboEntity.getCliente().getNombre(), reciboEntity.getFecha());
 	}
 
 	@Override
-	public ReciboDTO updateRecibo(Long id, Long idCliente, LocalDate fecha) {
-		
-			Optional<ClienteEntity> cliente = clienteProvider.findById(idCliente);
-			
-			ReciboEntity reciboEntity = new ReciboEntity();
-			reciboEntity.setCliente(cliente.get());
-			reciboEntity.setFecha(fecha.toString());
-			repository.save(reciboEntity);
-			return reciboEntityToDTO(reciboEntity);
-		
+	public String updateRecibo(Long id, Long idCliente) {
+		Optional<ReciboEntity> recibo = repository.findById(id);
+		if (!recibo.isPresent()) {
+			return "Recibo no encontrado";
+		}
+
+		Optional<ClienteEntity> cliente = clienteProvider.findById(idCliente);
+		if (!cliente.isPresent()) {
+			return "Cliente para el recibo no encontrado";
+		}
+
+		recibo.get().setCliente(cliente.get());
+		recibo.get().setFecha(LocalDate.now().toString());
+		repository.save(recibo.get());
+		return String.format("Recibo con el id %d actualizado para el cliente %s el dia %s ", recibo.get().getId(),
+				recibo.get().getCliente().getNombre(), recibo.get().getFecha());
+
 	}
 
 	@Override
@@ -75,6 +97,11 @@ public class ReciboProviderImp implements ReciboProvider {
 
 	private ReciboDTO reciboEntityToDTO(ReciboEntity reciboEntity) {
 		ModelMapper modelMapper = new ModelMapper();
+
+		modelMapper.createTypeMap(String.class, LocalDate.class);
+		modelMapper.addConverter(context -> LocalDate.parse((String) context.getSource()), String.class,
+				LocalDate.class);
+
 		ReciboDTO reciboDTO = modelMapper.map(reciboEntity, ReciboDTO.class);
 		return reciboDTO;
 	}
