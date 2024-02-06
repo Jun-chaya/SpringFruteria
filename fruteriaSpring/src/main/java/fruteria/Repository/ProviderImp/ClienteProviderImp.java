@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import fruteria.DTO.ClienteDTO;
@@ -20,8 +21,23 @@ public class ClienteProviderImp implements ClienteProvider {
 	ClienteRepository repository;
 
 	@Override
-	public List<ClienteDTO> getClientesList() {
-		return repository.findAll().stream().map(this::ClienteEntityToDTO).collect(Collectors.toList());
+	public ResponseEntity<List<ClienteDTO>> getClientesList() {
+		if (repository.findAll().isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity
+				.ok(repository.findAll().stream().map(this::ClienteEntityToDTO).collect(Collectors.toList()));
+	}
+
+	@Override
+	public ResponseEntity<ClienteDTO> getClienteById(Long id) {
+		Optional<ClienteEntity> clienteOpt = repository.findById(id);
+		if (!clienteOpt.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(ClienteEntityToDTO(clienteOpt.get()));
+
 	}
 
 	@Override
@@ -56,16 +72,6 @@ public class ClienteProviderImp implements ClienteProvider {
 			return "Cliente actualizado";
 		} else {
 			return "Cliente no encontrado";
-		}
-	}
-
-	@Override
-	public ClienteDTO getClienteById(Long id) {
-		Optional<ClienteEntity> clienteOpt = repository.findById(id);
-		if (clienteOpt.isPresent()) {
-			return clienteOpt.map(this::ClienteEntityToDTO).get();
-		} else {
-			return null;
 		}
 	}
 

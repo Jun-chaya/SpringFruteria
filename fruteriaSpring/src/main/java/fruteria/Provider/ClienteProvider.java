@@ -3,16 +3,18 @@ package fruteria.Provider;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import fruteria.DTO.ClienteDTO;
+import fruteria.DTO.ReciboDTO;
 
 public interface ClienteProvider {
 
-	List<ClienteDTO> getClientesList();
+	ResponseEntity<List<ClienteDTO>> getClientesList();
 
-	ClienteDTO getClienteById(Long id);
+	ResponseEntity<ClienteDTO> getClienteById(Long id);
 
 	boolean saveCliente(String nombre);
 

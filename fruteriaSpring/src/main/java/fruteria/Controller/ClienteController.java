@@ -3,10 +3,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,11 +27,11 @@ public class ClienteController {
     private ClienteProvider clienteProvider;
 
 	@GetMapping("/lista")
-	public List<ClienteDTO> getClientesList() {
+	public ResponseEntity<List<ClienteDTO>> getClientesList() {
 		return clienteProvider.getClientesList();
 	}
 	@GetMapping("/{id}")
-	public ClienteDTO getClienteById(@RequestParam Long id) {
+	public ResponseEntity<ClienteDTO> getClienteById(@PathVariable Long id) {
 		return clienteProvider.getClienteById(id);
 	}
 
@@ -40,12 +42,12 @@ public class ClienteController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public String deleteCliente(@RequestParam Long id) {
+	public String deleteCliente(@PathVariable Long id) {
 		return clienteProvider.deleteCliente(id);
 	}
 	
 	@PatchMapping("/update/{id}")
-	public String updateCliente(@RequestParam Long id, @RequestParam String nombre) {
+	public String updateCliente(@PathVariable Long id, @RequestParam String nombre) {
 		return clienteProvider.updateCliente(id, nombre);
 	}
 	
