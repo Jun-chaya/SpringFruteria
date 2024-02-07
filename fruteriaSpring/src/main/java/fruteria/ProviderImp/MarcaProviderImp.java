@@ -1,4 +1,4 @@
-package fruteria.Repository.ProviderImp;
+package fruteria.ProviderImp;
 
 import java.util.List;
 import java.util.stream.Collectors;

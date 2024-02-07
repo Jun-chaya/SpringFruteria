@@ -1,6 +1,5 @@
-package fruteria.Repository.ProviderImp;
+package fruteria.ProviderImp;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +13,7 @@ import fruteria.Entity.ItemEntity;
 import fruteria.Entity.LineaReciboEntity;
 import fruteria.Provider.LineaReciboProvider;
 import fruteria.Repository.ClienteRepository;
+import fruteria.Repository.ItemRepository;
 import fruteria.Repository.LineaReciboRepository;
 import fruteria.Repository.ReciboRepository;
 
@@ -28,7 +28,11 @@ public class LineaReciboProviderImp implements LineaReciboProvider {
 
 	@Autowired
 	LineaReciboRepository repository;
+	
+	@Autowired
+	ItemRepository itemRepository;
 
+	// TODO arreglar este metodo con el findAll
 	@Override
 	public ResponseEntity<List<LineaReciboDTO>> getLineaRecibosDeUnRecibo(Long reciboId) {
 		if (!reciboRepository.findById(reciboId).isPresent()) {
@@ -42,7 +46,7 @@ public class LineaReciboProviderImp implements LineaReciboProvider {
 
 	@Override
 	public ResponseEntity<List<LineaReciboDTO>> getLineaRecibosDeUnCliente(Long clienteId) {
-		if (!reciboRepository.findById(clienteId).isPresent()) {
+		if (!clienteRepository.findById(clienteId).isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
 
@@ -52,8 +56,11 @@ public class LineaReciboProviderImp implements LineaReciboProvider {
 
 	@Override
 	public ResponseEntity<List<LineaReciboDTO>> getLineaRecibosConItem(Long itemId) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!itemRepository.findById(itemId).isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		List<LineaReciboDTO> lineas = repository.findAll().stream().map(this::LineaReciboEntityToDto).collect(Collectors.toList());
+		return ResponseEntity.ok(lineas);
 	}
 
 	@Override

@@ -21,4 +21,6 @@ public interface ClienteProvider {
 	String deleteCliente(Long id);
 
 	String updateCliente(Long id, String nombre);
+	
+	byte[] getClienteReport();
 }

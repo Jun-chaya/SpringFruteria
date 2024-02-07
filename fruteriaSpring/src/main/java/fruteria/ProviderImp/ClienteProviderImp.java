@@ -1,6 +1,10 @@
-package fruteria.Repository.ProviderImp;
+package fruteria.ProviderImp;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -8,11 +12,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import fruteria.DTO.ClienteDTO;
 import fruteria.Entity.ClienteEntity;
 import fruteria.Provider.ClienteProvider;
 import fruteria.Repository.ClienteRepository;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class ClienteProviderImp implements ClienteProvider {
@@ -75,4 +87,26 @@ public class ClienteProviderImp implements ClienteProvider {
 		}
 	}
 
+	public byte[] getClienteReport() {
+		byte[] reportContent = null;
+		File file;
+		try {
+			file = ResourceUtils.getFile(getClass().getResource("/reports/Clientes.jrxml").getFile());
+
+			JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+			JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(getClientesList().getBody());
+			Map<String, Object> parameters = new HashMap<>();
+
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+			reportContent = JasperExportManager.exportReportToPdf(jasperPrint);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+
+		return reportContent;
+	}
 }

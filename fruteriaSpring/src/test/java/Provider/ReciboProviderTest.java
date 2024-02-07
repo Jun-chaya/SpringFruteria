@@ -21,9 +21,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import fruteria.Entity.ClienteEntity;
 import fruteria.Entity.ReciboEntity;
+import fruteria.ProviderImp.ReciboProviderImp;
 import fruteria.Repository.ClienteRepository;
 import fruteria.Repository.ReciboRepository;
-import fruteria.Repository.ProviderImp.ReciboProviderImp;
 
 @ExtendWith(MockitoExtension.class)
 public class ReciboProviderTest {

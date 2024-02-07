@@ -1,8 +1,13 @@
 package fruteria.Controller;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fruteria.DTO.ClienteDTO;
 import fruteria.Provider.ClienteProvider;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.repo.Resource;
 
 @RestController
 @RequestMapping("/cliente")
@@ -51,5 +58,22 @@ public class ClienteController {
 		return clienteProvider.updateCliente(id, nombre);
 	}
 	
+	 @GetMapping("item-report/")
+	  public ResponseEntity<ByteArrayResource> getItemReport() throws JRException, IOException {
+
+	    byte[] reportContent =  clienteProvider.getClienteReport();
+
+	    ByteArrayResource resource = new ByteArrayResource(reportContent);
+
+	    
+	    return ResponseEntity.ok()
+	        .contentType(MediaType.APPLICATION_PDF)
+	        .contentLength(resource.contentLength())
+	        .header(HttpHeaders.CONTENT_DISPOSITION,
+	            ContentDisposition.attachment()
+	                .filename("cliente-report.pdf")
+	                .build().toString())
+	        .body(resource);
+	  }
 	
 }

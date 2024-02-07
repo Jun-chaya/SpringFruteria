@@ -1,4 +1,4 @@
-package fruteria.Repository.ProviderImp;
+package fruteria.ProviderImp;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import fruteria.DTO.ItemDTO;
 import fruteria.Entity.ItemEntity;
 import fruteria.Provider.ItemProvider;
+import fruteria.Repository.CategoriaRepository;
 import fruteria.Repository.ItemRepository;
 import fruteria.Repository.MarcaRepository;
+import fruteria.Repository.OrigenRepository;
 
 @Service
 public class ItemProviderImp implements ItemProvider {
@@ -25,11 +27,11 @@ public class ItemProviderImp implements ItemProvider {
 	@Autowired
 	private MarcaRepository marcaRepository;
 
-	// @Autowired
-	// private OrigenRepository origenRepository;
+	@Autowired
+	private OrigenRepository origenRepository;
 
-	// @Autowired
-	// private CategoriaRepository categoriaRepository;
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
 	@Override
 	public ResponseEntity<List<ItemDTO>> getAllItems() {
@@ -40,10 +42,15 @@ public class ItemProviderImp implements ItemProvider {
 		return ResponseEntity.ok(items);
 	}
 
+	// TODO Arreglar el metodo de encontrar items por marca y completar los siguientes metodos
 	@Override
 	public ResponseEntity<List<ItemDTO>> getItemsByMarca(Long marcaId) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!marcaRepository.existsById(marcaId)) {
+			return ResponseEntity.notFound().build();
+		}
+		List<ItemDTO> items = itemRepository.findAll().stream().map(this::ItemEntityToDto)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(items);
 	}
 
 	@Override
@@ -68,7 +75,7 @@ public class ItemProviderImp implements ItemProvider {
 	}
 
 	@Override
-	public boolean saveItem(String nombre, Long marcaId, Long origenId, Long categoriaId, Double precio, 
+	public boolean saveItem(String nombre, Long marcaId, Long origenId, Long categoriaId, Double precio,
 			String fechaCaducidad) {
 		if (!marcaRepository.existsById(marcaId)) {
 			return false;
@@ -104,8 +111,7 @@ public class ItemProviderImp implements ItemProvider {
 	}
 
 	@Override
-	public String updateItem(Long id, String nombre, Long marcaId, Long origenId, Long categoriaId, Double precio
-		) {
+	public String updateItem(Long id, String nombre, Long marcaId, Long origenId, Long categoriaId, Double precio) {
 		if (!itemRepository.existsById(id)) {
 			return "Item no encontrado";
 		}
@@ -120,7 +126,7 @@ public class ItemProviderImp implements ItemProvider {
 		updatedItem.setPrecio(precio);
 		itemRepository.save(updatedItem);
 		return "Item actualizado";
-	
+
 	}
 
 	@Override

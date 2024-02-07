@@ -1,7 +1,6 @@
-package fruteria.Repository.ProviderImp;
+package fruteria.ProviderImp;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,7 +31,7 @@ public class ReciboProviderImp implements ReciboProvider {
 		if (repository.findAll().isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 		return ResponseEntity
 				.ok(repository.findAll().stream().map(this::reciboEntityToDTO).collect(Collectors.toList()));
 	}
